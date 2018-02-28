@@ -15,17 +15,24 @@ def index():
 @app.route('/schedule/monthly', methods=['GET'])
 # def get_monthly_schedule(year, month, day, years, step=1):
 def get_monthly_schedule():
-    schedule = monthly_schedule(date(int(request.args['year']),
-                                     int(request.args['month']),
-                                     int(request.args['day'])),
-                                int(request.args['years']),
-                                int(request.args.get('step', 1)))
+    print request.args
+    n_req = dict(map(lambda x: (x[0], int(x[1])), request.args.items()))
+    schedule = monthly_schedule(date(n_req['year'],
+                                     n_req['month'],
+                                     n_req['day']),
+                                n_req['years'],
+                                n_req.get('step', 1))
     return jsonify({'schedule': schedule2json(schedule)})
 
 
 @app.route('/schedule/weekly', methods=['GET'])
 def get_weekly_schedule(year, month, day, years, step=1):
-    schedule = weekly_schedule(date(year, month, day), years, step)
+    n_req = dict(map(lambda x: (x[0], int(x[1])), request.args.items()))
+    schedule = weekly_schedule(date(n_req['year'],
+                                    n_req['month'],
+                                    n_req['day']),
+                               n_req['years'],
+                               n_req.get('step', 1))
     return jsonify({'schedule': schedule})
 
 
