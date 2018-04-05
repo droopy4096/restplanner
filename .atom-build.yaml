@@ -16,11 +16,17 @@ sh: true,
 #   - ^regexp2$
 # keymap: <keymap string>
 # atomCommandName: namespace:command
-# targets:
-#   pypi:
-#       cmd: twine
-#       args:
-#         - upload
-#         - dist/*
-#   deploy:
-#       # (any previous options are viable here except `targets` itself)
+targets:
+  fetch-libs:
+      cmd: pip
+      args:
+        - install
+        - "-t"
+        - lib
+        - "-r"
+        - requirements.txt
+  clean-libs:
+      cmd: /bin/rm
+      args:
+        - "-rf"
+        - lib

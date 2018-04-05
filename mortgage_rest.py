@@ -48,11 +48,11 @@ def get_mortgage():
     downpayment = float(request.json['downpayment'])
     schedule = json2schedule(request.json['schedule'])
     m = Mortgage(house_price, interest, downpayment, schedule)
-    statements = []
-    for s in m.statements():
-        statements.append(s.serialize_json())
+    payments = []
+    for s in m.payments():
+        payments.append(s.serialize_json())
 
-    return jsonify(statements)
+    return jsonify(payments)
 
 
 if __name__ == '__main__':
