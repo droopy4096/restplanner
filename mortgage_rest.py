@@ -3,7 +3,7 @@
 from flask import Flask, jsonify, request, abort
 from mortgage.TermScheduler import monthly_schedule, weekly_schedule
 from mortgage.TermScheduler import schedule2json, json2schedule
-from mortgage.Mortgage import Mortgage
+from mortgage.Mortgage import Mortgage, RapidPayMortgage
 from datetime import date
 
 app = Flask(__name__)
@@ -48,6 +48,24 @@ def get_mortgage():
     downpayment = float(request.json['downpayment'])
     schedule = json2schedule(request.json['schedule'])
     m = Mortgage(house_price, interest, downpayment, schedule)
+    payments = []
+    for s in m.payments():
+        payments.append(s.serialize_json())
+
+    return jsonify(payments)
+
+#TODO Need to finalize prepayment schedule machinery 
+@app.route('/rapidmortgage', methods=['POST'])
+def get_mortgage():
+    # Mortgage(300000, 0.035, 300000 * 0.2, monthly_schedule(date(2009, 10, 1), 15))
+    if not request.json:
+        abort(400)
+    house_price = float(request.json['house_price'])
+    interest = float(request.json['interest'])
+    downpayment = float(request.json['downpayment'])
+    schedule = json2schedule(request.json['schedule'])
+    prepay_schedule = json2schedule(request.json['prepay_schedule'])
+    m = RapidPayMortgage(house_price, interest, downpayment, schedule, prepay_schedule )
     payments = []
     for s in m.payments():
         payments.append(s.serialize_json())
