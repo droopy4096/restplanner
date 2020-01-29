@@ -17,7 +17,7 @@ def index():
 @app.route('/schedule/monthly', methods=['GET'])
 # def get_monthly_schedule(year, month, day, years, step=1):
 def get_monthly_schedule():
-    print request.args
+    # print request.args
     n_req = dict(map(lambda x: (x[0], int(x[1])), request.args.items()))
     schedule = monthly_schedule(date(n_req['year'],
                                      n_req['month'],
@@ -54,9 +54,9 @@ def get_mortgage():
 
     return jsonify(payments)
 
-#TODO Need to finalize prepayment schedule machinery 
+# TODO Need to finalize prepayment schedule machinery
 @app.route('/rapidmortgage', methods=['POST'])
-def get_mortgage():
+def get_rapidmortgage():
     # Mortgage(300000, 0.035, 300000 * 0.2, monthly_schedule(date(2009, 10, 1), 15))
     if not request.json:
         abort(400)
@@ -65,7 +65,7 @@ def get_mortgage():
     downpayment = float(request.json['downpayment'])
     schedule = json2schedule(request.json['schedule'])
     prepay_schedule = json2schedule(request.json['prepay_schedule'])
-    m = RapidPayMortgage(house_price, interest, downpayment, schedule, prepay_schedule )
+    m = RapidPayMortgage(house_price, interest, downpayment, schedule, prepay_schedule)
     payments = []
     for s in m.payments():
         payments.append(s.serialize_json())
