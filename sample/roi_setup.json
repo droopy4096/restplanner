@@ -1,0 +1,11 @@
+{
+    "target_sell_price": 310000,
+    "appreciation": "1.03",
+    "baseline_return": "100000",
+    "investments": "10000",
+    "property_tax_rate": "0.0125",
+    "property_insurance": "1000",
+    "tax_rate": "0.3",
+    "sale_expences": "0.1"
+
+}

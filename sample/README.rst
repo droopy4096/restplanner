@@ -34,4 +34,18 @@ Generate payment table
 
 manually::
 
-  curl -X POST -H "Content-Type: application/json" --data @mortgage_setup.json https://restplanner-200203.appspot.com/mortgage
+  curl -X POST -H "Content-Type: application/json" --data @mortgage_setup.json https://restplanner-200203.appspot.com/mortgage > payment_schedule.json
+
+Assemble ROI request object
+---------------------------
+
+manually::
+
+  jq -s '.[0] * .[1] * .[2] * .[3]' monthly_schedule_15_1.json mortgage.json payment_schedule.json roi_setup.json > roi_request.json
+
+Request ROI table
+-----------------
+
+manually::
+
+  curl -X POST -H "Content-Type: application/json" --data @roi_request.json http://restplanner-200203.appspot.com/roi > roi.json
